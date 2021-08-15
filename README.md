@@ -89,5 +89,36 @@
     ```
 6. Deploy prometheus operator into our kubernetes cluster using Helm 
 
+    * prometheus operator -  https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack 
+    * First add the helm repo 
+    * You can install chart with fixed version number as well. examples are shown below
 
+    ```
+    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+
+    helm repo update
+
+    helm install prometheus prometheus-community/kube-prometheus-stack
+
+    helm install prometheus prometheus-community/kube-prometheus-stack --version "9.4.1"
+    ```
+
+    * After installing , you can refer all the resources created using below command (pod, service, daemonset, deployment, replicaset, statefulset)
+    * We need to create a service monitor to our go-app . go inside kubernetes folder and apply the service-monitor-go-app.yaml.
+
+    ```
+    kubectl get all 
+
+    kubectl apply -f service-monitor-go-app.yaml
+
+    kubectl get servicemonitor
+    ```
+
+    * Now we can port-forward prometheus, grafana instances and see whether the metrics of our simple-go-app and kubernetes cluster 
+
+    ```
+    kubectl port-forward prometheus-prometheus-kube-prometheus-prometheus-0 9090
+
+    kubectl port-forward prometheus-grafana-xxxxx 3000
+    ```
 
