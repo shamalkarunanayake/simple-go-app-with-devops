@@ -122,3 +122,41 @@
     kubectl port-forward prometheus-grafana-xxxxx 3000
     ```
 
+7. Logging 
+
+    * Latest helm charts can be gathered from https://github.com/elastic/helm-charts 
+
+    ```
+    helm repo add elastic https://helm.elastic.co 
+    helm repo add fluent https://fluent.github.io/helm-charts
+    helm repo update
+    ```
+    ```
+    # Install elasticsearch
+
+    helm install elasticsearch elastic/elasticsearch
+
+    # Install kibana
+
+    helm install kibana elastic/kibana
+
+    # Install fluentd
+
+    helm install fluentd fluent/fluentd
+    helm show values fluent/fluentd
+
+    # Install metric-beat
+
+    helm install metricbeat elastic/metricbeat
+
+    # Install file-beat
+    helm install filebeat elastic/filebeat
+
+    # Install logstash
+    helm install logstash elastic/logstash
+    ```
+
+    * Go inside elastic-fluentd-kibana folder apply the counter.yaml to generate simple counter logs
+    ```
+    kubectl apply -f counter.yaml
+    ```
