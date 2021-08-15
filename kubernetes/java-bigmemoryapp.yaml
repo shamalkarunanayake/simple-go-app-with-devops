@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jbmapp
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: jbmapp
+  template:
+    metadata:
+      labels:
+        app: jbmapp
+    spec:
+      containers:
+      - name: jbmapp1
+        image: banzaicloud/dynclassgen:1.0
+        ports: 
+        - containerPort: 5400
