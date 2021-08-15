@@ -1,20 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jbmapp
-  namespace: default
+  name: dyn-class-gen-deployment
+  labels:
+    app: dyn-class-gen
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: jbmapp
+      app: dyn-class-gen
   template:
     metadata:
       labels:
-        app: jbmapp
+        app: dyn-class-gen
     spec:
       containers:
-      - name: jbmapp1
-        image: banzaicloud/dynclassgen:1.0
-        ports: 
-        - containerPort: 5400
+        - name: dyn-class-gen-container
+          image: banzaicloud/dynclassgen:1.0
+          env:
+          - name: DYN_CLASS_COUNT
+            value: "256"
+          - name: MEM_USAGE_PER_OBJECT_MB
+            value: "1"
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: 1
+            limits:
+              memory: "1Gi"
+              cpu: 2

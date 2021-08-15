@@ -160,3 +160,21 @@
     ```
     kubectl apply -f counter.yaml
     ```
+    * After following below steps, you can access kibana 
+
+    ```
+    kubectl port-forward --namespace default  elasticsearch-master-0  9200:9200
+
+    kubectl port-forward kibana-kibana-b4dfc69c7-rtx9g 5601
+
+    kubectl --namespace default port-forward fluentd-XXXX 24231:24231
+    curl http://127.0.0.1:24231/metrics
+    ```
+
+8. Deploy java big-memory-app to test auto-scaling 
+
+   * Go inside kubernetes folder and deploy java-bigmemoryapp.yaml
+
+   ```
+   Kubectl apply -f java-bigmemoryapp.yaml
+   ```
