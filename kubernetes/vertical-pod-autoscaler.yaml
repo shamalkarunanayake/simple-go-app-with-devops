@@ -1,0 +1,10 @@
+apiVersion: poc.autoscaling.k8s.io/v1alpha1
+kind: VerticalPodAutoscaler
+metadata:
+  name: dyn-class-gen-vpa
+spec:
+  selector:
+    matchLabels:
+      app: dyn-class-gen
+  updatePolicy:
+    updateMode: "Auto"
