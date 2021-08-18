@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: webapp1
-        image: shamalskk/test-app:latest
+        image: shamalskk/final-go-app-log1:latest
         ports: 
         - containerPort: 8080
      
