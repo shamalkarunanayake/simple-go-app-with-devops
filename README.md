@@ -12,7 +12,7 @@
 
 2. First have a look on go-app-custom-metrics folder to get in touch with simple go-app. It consist of a Dockerfile. and the image also published in dockerhub.
 
-   ```docker pull shamalskk/test-app```
+   ```docker pull shamalskk/final-go-app-log1```
 
    In main.go file there are some implementations to expose prometheus  metrices in go-app. given below are example steps to build and push Docker image using dockerfile
 
@@ -34,7 +34,7 @@
 
     ### Prerequisites
 * Terraform version >= 0.14
-    * Go inside terraform folder 
+    * cd terraform 
 
     * Export credentials for Azure
 
@@ -56,7 +56,7 @@
     terraform destroy
     ```
 
-4. Login to azure portal and get the clusterconfig to local machine
+4. Login to azure portal and get the cluster config to local machine
 
     * Browse azure portal and navigate to specific resource group. Now you can see aks and network is created. (you can refer the connect option inside aks to connect to created cluster.example steps are given below)
     * check whether config is set to the current context 
@@ -72,7 +72,7 @@
 
 5. Deploy our simple go-app in kubernetes 
 
-    * Go inside kubernetes folder.
+    * cd kubernetes 
     * you can apply the below commands to deploy go-app & check whether your deployemnt, service, pod are  correctly created 
 
     ```
@@ -145,6 +145,11 @@
     helm install fluentd fluent/fluentd
     helm show values fluent/fluentd
 
+    or else 
+
+    cd elastic-fluentd-kibana
+    kubectl apply -f fluentd.yaml
+
     # Install metric-beat
 
     helm install metricbeat elastic/metricbeat
@@ -176,5 +181,7 @@
    * Go inside kubernetes folder and deploy java-bigmemoryapp.yaml
 
    ```
-   Kubectl apply -f java-bigmemoryapp.yaml
+   kubectl apply -f java-bigmemoryapp.yaml
+
+   kubectl apply -f vertical-pod-autoscaler.yaml
    ```
