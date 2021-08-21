@@ -7,7 +7,8 @@ import (
 	"net/http"
 	"time"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
+	"go.elastic.co/ecslogrus"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -44,18 +45,25 @@ var (
 )
 
 func main() {
-	log.Print("Logging in Go!")
-	log.SetFormatter(&log.JSONFormatter{})
+
+	log := logrus.New()
+	log.SetFormatter(&ecslogrus.Formatter{})
+
+	epoch := time.Unix(0, 0).UTC()
+	log.WithTime(epoch).WithField("custom", "foo").Info("hello")
+
+	logrus.Print("Logging in Go!")
+
 	for a := 0; a < 1000; a++ {
 		log.Print("Logging in Go!%d\n", a)
 	}
 
-	log.WithFields(log.Fields{
+	logrus.WithFields(logrus.Fields{
 		"animal": "walrus",
 		"size":   10,
 	}).Info("A group of walrus emerges from the ocean")
 
-	log.WithFields(log.Fields{
+	log.WithFields(logrus.Fields{
 		"omg":    false,
 		"number": 11,
 	}).Warn("The group's number increased tremendously!")
@@ -67,7 +75,7 @@ func main() {
 
 	// A common pattern is to re-use fields between logging statements by re-using
 	// the logrus.Entry returned from WithFields()
-	contextLogger := log.WithFields(log.Fields{
+	contextLogger := log.WithFields(logrus.Fields{
 		"common": "this is a common field",
 		"other":  "I also should be logged always",
 	})
@@ -93,18 +101,18 @@ func main() {
 		}
 	}()
 
-	standardFields := log.Fields{
+	standardFields := logrus.Fields{
 		"hostname": "staging-1",
 		"appname":  "go-app",
 		"session":  "1ce3f6v",
 	}
 
-	log.WithFields(standardFields).WithFields(log.Fields{"string": "foo", "int": 1, "float": 1.1}).Info("My first ssl event from Golang")
+	log.WithFields(standardFields).WithFields(logrus.Fields{"string": "foo", "int": 1, "float": 1.1}).Info("My first ssl event from Golang")
 
 	histogramVec := prometheus.NewHistogramVec(prometheus.HistogramOpts{
 		Name: "prom_request_time",
 		Help: "Time it has taken to retrieve the metrics",
-	}, []string{"time"})
+	}, []string{"@timestamp"})
 
 	prometheus.Register(histogramVec)
 
